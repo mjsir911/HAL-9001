@@ -8,3 +8,7 @@
 
 * Bot that records clocking in and clocking out of work and logs it all in a
   database
+
+## Even simpler
+
+* connect to a server with a nick and join a channel
