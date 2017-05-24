@@ -27,7 +27,7 @@ class MessageCase(unittest.TestCase):
         addr = Address('irc.freenode.net', 6666)
         identy = Ident('hal', 'irc.freenode.net', 'hal')
         tmpdir = tempfile.gettempdir()
-        cls.bot = HAL_9001.bot.Bot(addr, identy, tmpdir)
+        cls.bot = Bot(addr, identy, tmpdir)
         class SaySomethingThenQuit():
             def __init__(self, bot):
                 self.bot = bot
