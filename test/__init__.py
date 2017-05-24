@@ -18,4 +18,4 @@ __maintainers__ = "Marco Sirabella"
 __email__       = "msirabel@gmail.com"
 __status__      = "Prototype"  # "Prototype", "Development" or "Production"
 __module__      = ""
-__all__         = ['test_logger.MessageCase']
+__all__         = ['simple.MessageCase']

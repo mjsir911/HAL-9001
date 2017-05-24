@@ -36,7 +36,7 @@ class MessageCase(unittest.TestCase):
                 if not self.spoken:
                     if self.channel not in self.bot.channels:
                         self.bot.channels.append(channel)
-                    self.bot.action[MSG]('Hello world')
+                    self.bot.command['PRIVMSG']('Hello world')
                     self.spoken = True
                 else:
                     self.bot.everything.remove(self)
