@@ -20,13 +20,14 @@ __all__         = []
 
 
 class MessageCase(unittest.TestCase):
-    def __init__(self, *args, **kwargs):
+    @classmethod
+    def setUpClass(cls):
         from HAL_9001.bot import Bot
         from HAL_9001.abc import Address, Ident
         addr = Address('irc.freenode.net', 6666)
         identy = Ident('hal', 'irc.freenode.net', 'hal')
         tmpdir = tempfile.gettempdir()
-        self.bot = HAL_9001.bot.Bot(addr, identy, tmpdir)
+        cls.bot = HAL_9001.bot.Bot(addr, identy, tmpdir)
         class SaySomethingThenQuit():
             def __init__(self, bot):
                 self.bot = bot
@@ -41,9 +42,8 @@ class MessageCase(unittest.TestCase):
                 else:
                     self.bot.everything.remove(self)
 
-        self.bot.everything.append(SaySomethingThenQuit(self.bot))
-        super().__init__(*args, **kwargs)
-        self.bot()
+        cls.bot.everything.append(SaySomethingThenQuit(self.bot))
+        cls.bot()
         time.sleep(1)
 
     def testConfirmChannelConnection(self):
