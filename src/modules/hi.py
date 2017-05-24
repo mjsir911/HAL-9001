@@ -4,4 +4,3 @@ def testfunc(cls, connection, event):
 
 # bump
 print('yessssss')
-print('yessssss')

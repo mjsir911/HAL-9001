@@ -23,7 +23,7 @@ class ModuleBot(irc.client.SimpleIRCClient):
         for mod in self.mod_update:
             mod(self, connection, event)
 
-z = ModuleBot(module.Update_Keeper(module.mdir))
+z = ModuleBot(module.Package_Keeper(module.mdir))
 z.connect('irc.freenode.org', 6666, 'test')
 z.start()
 

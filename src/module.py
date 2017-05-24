@@ -88,3 +88,21 @@ class Update_Keeper():
     def __call__(self):
         for mod in self.modules:
             self.hashes.update(self.get_module(mod))
+
+
+class Package_Keeper(Update_Keeper):
+    def __init__(self, module_directory):
+        self.package = importlib.import_module(module_directory)
+        super().__init__(module_directory)
+    @property
+    def modules(self):
+        return list(self.package.modules.keys())
+
+    def get_module(self, mod_name):
+        m_mod = self.package.modules.get(mod_name, False)
+        m_hash = self.get_module_hash(mod_name)
+        if m_hash != self.hashes.get(m_mod, False):
+            imported = importlib.reload(m_mod)
+        else:
+            imported = m_mod
+        return {imported: m_hash}
