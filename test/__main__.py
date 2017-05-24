@@ -4,7 +4,7 @@
 import unittest
 try:
     from . import __init__ as init
-except SystemError:
+except (SystemError, ImportError):
     import __init__ as init
 
 __appname__     = ""
