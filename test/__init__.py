@@ -7,7 +7,6 @@ sys.path.insert(1,
     os.path.split(os.path.dirname(os.path.abspath(__file__)))[0] + '/src/'
 )
 import HAL_9001
-from . import test_logger
 
 __appname__     = ""
 __author__      = "Marco Sirabella"
@@ -19,9 +18,4 @@ __maintainers__ = "Marco Sirabella"
 __email__       = "msirabel@gmail.com"
 __status__      = "Prototype"  # "Prototype", "Development" or "Production"
 __module__      = ""
-__all__         = []
-
-def allwrapper(obj):
-    global __all__
-    __all__.append(func)
-    return obj
+__all__         = ['test_logger.MessageCase']

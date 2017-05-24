@@ -5,7 +5,6 @@ import unittest
 import tempfile
 import time
 import collections
-from . import *
 
 __appname__     = ""
 __author__      = "Marco Sirabella"
