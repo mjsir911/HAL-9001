@@ -1,5 +1,6 @@
 class Bot:
-  def __init__(self):
-    pass
+    def __init__(self, addr, identy, tempdir):
+        self.everything = []
+
 
 
