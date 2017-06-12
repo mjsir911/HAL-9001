@@ -33,7 +33,7 @@ def testBot():
 
         return Bot(addr, identy, tmpdir)
 
-class RFC_Meta(type):
+class RFC_Type(type):
     @classmethod
     def process_command(cls, attrs, command):
         command = command.split()
@@ -84,7 +84,7 @@ class RFC_Meta(type):
 
         return super().__new__(cls, name, bases, attrs)
 
-class RFC1459_Case(unittest.TestCase, metaclass=RFC_Meta):
+class RFC1459_Case(unittest.TestCase, metaclass=RFC_Type):
     """
     TODO: auto-create
     https://tools.ietf.org/html/rfc1459
