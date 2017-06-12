@@ -84,7 +84,6 @@ class RFC_Type(type):
 
 class RFC1459_Case(unittest.TestCase, metaclass=RFC_Type):
     """
-    TODO: auto-create
     https://tools.ietf.org/html/rfc1459
     """
 
