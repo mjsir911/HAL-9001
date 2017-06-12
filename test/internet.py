@@ -21,7 +21,7 @@ standards = (1459,)
 url = 'https://tools.ietf.org/html/rfc{}'
 
 for s_num in standards:
-    with open('{}/RFC{}_commands.list'.format(__init__.path, s_num), 'w') as fp:
+    with open('{}/RFC{}_commands.list'.format(__init__.__path__, s_num), 'w') as fp:
         r =  requests.get(url.format(s_num))
         lines = r.text.split('\n')
         for i, line in enumerate(lines):
