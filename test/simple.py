@@ -38,57 +38,57 @@ class RFC1459_Case(unittest.TestCase):
 
     def test_PASS(self):
         """
-        parameters: <password>
+        parameters:  <password>
         """
-        self.bot.command['PASS']()
+        self.bot.command['PASS'](password)
 
     def test_NICK(self):
         """
-        parameters: <nickname>[<hopcount>]
+        parameters:  <nickname> [ <hopcount> ]
         """
-        self.bot.command['NICK']()
+        self.bot.command['NICK'](nickname)
 
     def test_USER(self):
         """
-        parameters: <username><hostname><servername><realname>
+        parameters:  <username> <hostname> <servername> <realname>
         """
-        self.bot.command['USER']()
+        self.bot.command['USER'](username, hostname, servername, realname)
 
     def test_SERVER(self):
         """
-        parameters: <servername><hopcount><info>
+        parameters:  <servername> <hopcount> <info>
         """
-        self.bot.command['SERVER']()
+        self.bot.command['SERVER'](servername, hopcount, info)
 
     def test_OPER(self):
         """
-        parameters: <user><password>
+        parameters:  <user> <password>
         """
-        self.bot.command['OPER']()
+        self.bot.command['OPER'](user, password)
 
     def test_QUIT(self):
         """
-        parameters: [<Quitmessage>]
+        parameters:  [<Quit message>]
         """
         self.bot.command['QUIT']()
 
     def test_SQUIT(self):
         """
-        parameters: <server><comment>
+        parameters:  <server> <comment>
         """
-        self.bot.command['SQUIT']()
+        self.bot.command['SQUIT'](server, comment)
 
     def test_JOIN(self):
         """
-        parameters: <channel>{,<channel>}[<key>{,<key>}]
+        parameters:  <channel>{,<channel>} [<key>{,<key>}]
         """
-        self.bot.command['JOIN']()
+        self.bot.command['JOIN'](channel)
 
     def test_PART(self):
         """
-        parameters: <channel>{,<channel>}
+        parameters:  <channel>{,<channel>}
         """
-        self.bot.command['PART']()
+        self.bot.command['PART'](channel)
 
     def test_MODE(self):
         """
@@ -98,184 +98,183 @@ class RFC1459_Case(unittest.TestCase):
 
     def test_TOPIC(self):
         """
-        parameters: <channel>[<topic>]
+        parameters:  <channel> [<topic>]
         """
-        self.bot.command['TOPIC']()
+        self.bot.command['TOPIC'](channel)
 
     def test_NAMES(self):
         """
-        parameters: [<channel>{,<channel>}]
+        parameters:  [<channel>{,<channel>}]
         """
         self.bot.command['NAMES']()
 
     def test_LIST(self):
         """
-        parameters: [<channel>{,<channel>}[<server>]]
+        parameters:  [<channel>{,<channel>} [<server>]]
         """
         self.bot.command['LIST']()
 
     def test_INVITE(self):
         """
-        parameters: <nickname><channel>
+        parameters:  <nickname> <channel>
         """
-        self.bot.command['INVITE']()
+        self.bot.command['INVITE'](nickname, channel)
 
     def test_KICK(self):
         """
-        parameters: <channel><user>[<comment>]
+        parameters:  <channel> <user> [<comment>]
         """
-        self.bot.command['KICK']()
+        self.bot.command['KICK'](channel, user)
 
     def test_VERSION(self):
         """
-        parameters: [<server>]
+        parameters:  [<server>]
         """
         self.bot.command['VERSION']()
 
     def test_STATS(self):
         """
-        parameters: [<query>[<server>]]
+        parameters:  [<query> [<server>]]
         """
         self.bot.command['STATS']()
 
     def test_LINKS(self):
         """
-        parameters: [[<remoteserver>]<servermask>]
+        parameters:  [[<remote server>] <server mask>]
         """
-        self.bot.command['LINKS']()
+        self.bot.command['LINKS'](server_mask)
 
     def test_TIME(self):
         """
-        parameters: [<server>]
+        parameters:  [<server>]
         """
         self.bot.command['TIME']()
 
     def test_CONNECT(self):
         """
-        parameters: <targetserver>[<port>[<remoteserver>]]
+        parameters:  <target server> [<port> [<remote server>]]
         """
-        self.bot.command['CONNECT']()
+        self.bot.command['CONNECT'](target_server)
 
     def test_TRACE(self):
         """
-        parameters: [<server>]
+        parameters:  [<server>]
         """
         self.bot.command['TRACE']()
 
     def test_ADMIN(self):
         """
-        parameters: [<server>]
+        parameters:  [<server>]
         """
         self.bot.command['ADMIN']()
 
     def test_INFO(self):
         """
-        parameters: [<server>]
+        parameters:  [<server>]
         """
         self.bot.command['INFO']()
 
     def test_PRIVMSG(self):
         """
-        parameters: <receiver>{,<receiver>}<texttobesent>
+        parameters:  <receiver>{,<receiver>} <text to be sent>
         """
-        self.bot.command['PRIVMSG']()
+        self.bot.command['PRIVMSG'](receiver, text_to_be_sent)
 
     def test_NOTICE(self):
         """
-        parameters: <nickname><text>
+        parameters:  <nickname> <text>
         """
-        self.bot.command['NOTICE']()
+        self.bot.command['NOTICE'](nickname, text)
 
     def test_WHO(self):
         """
-        parameters: [<name>[<o>]]
+        parameters:  [<name> [<o>]]
         """
         self.bot.command['WHO']()
 
     def test_WHOIS(self):
         """
-        parameters: [<server>]<nickmask>[,<nickmask>[,...]]
+        parameters:  [<server>] <nickmask>[,<nickmask>[,...]]
         """
-        self.bot.command['WHOIS']()
+        self.bot.command['WHOIS'](nickmask)
 
     def test_WHOWAS(self):
         """
-        parameters: <nickname>[<count>[<server>]]
+        parameters:  <nickname> [<count> [<server>]]
         """
-        self.bot.command['WHOWAS']()
+        self.bot.command['WHOWAS'](nickname)
 
     def test_KILL(self):
         """
-        parameters: <nickname><comment>
+        parameters:  <nickname> <comment>
         """
-        self.bot.command['KILL']()
+        self.bot.command['KILL'](nickname, comment)
 
     def test_PING(self):
         """
-        parameters: <server1>[<server2>]
+        parameters:  <server1> [<server2>]
         """
-        self.bot.command['PING']()
+        self.bot.command['PING'](server1)
 
     def test_PONG(self):
         """
-        parameters: <daemon>[<daemon2>]
+        parameters:  <daemon> [<daemon2>]
         """
-        self.bot.command['PONG']()
+        self.bot.command['PONG'](daemon)
 
     def test_ERROR(self):
         """
-        parameters: <errormessage>
+        parameters:  <error message>
         """
-        self.bot.command['ERROR']()
+        self.bot.command['ERROR'](error_message)
 
     def test_AWAY(self):
         """
-        parameters: [message]
+        parameters:  [message]
         """
         self.bot.command['AWAY']()
 
     def test_REHASH(self):
         """
-        parameters: None
+        parameters:  None
         """
         self.bot.command['REHASH']()
 
     def test_RESTART(self):
         """
-        parameters: None
+        parameters:  None
         """
         self.bot.command['RESTART']()
 
     def test_SUMMON(self):
         """
-        parameters: <user>[<server>]
+        parameters:  <user> [<server>]
         """
-        self.bot.command['SUMMON']()
+        self.bot.command['SUMMON'](user)
 
     def test_USERS(self):
         """
-        parameters: [<server>]
+        parameters:  [<server>]
         """
         self.bot.command['USERS']()
 
     def test_WALLOPS(self):
         """
-        parameters: Texttobesenttoalloperatorscurrentlyonline
+        parameters:  Text to be sent to all operators currently online
         """
-        self.bot.command['WALLOPS']()
+        self.bot.command['WALLOPS'](Text_to_be_sent_to_all_operators_currently_online)
 
     def test_USERHOST(self):
         """
-        parameters: <nickname>{<space><nickname>}
+        parameters:  <nickname>{<space><nickname>}
         """
-        self.bot.command['USERHOST']()
+        self.bot.command['USERHOST'](nickname)
 
     def test_ISON(self):
         """
-        parameters: <nickname>{<space><nickname>}
+        parameters:  <nickname>{<space><nickname>}
         """
-        self.bot.command['ISON']()
-
+        self.bot.command['ISON'](nickname)
 
 
 @unittest.skip("testing skipping")
@@ -318,6 +317,3 @@ class MessageCase(unittest.TestCase):
             self.assertNotIn('#bot-test', bot.channels)
 
         time.sleep(1)
-
-if __name__ == '__main__':
-    unittest.main()
