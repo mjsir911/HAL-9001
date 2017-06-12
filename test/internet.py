@@ -17,7 +17,7 @@ __email__       = "msirabel@gmail.com"
 __status__      = "Prototype"  # "Prototype", "Development" or "Production"
 __module__      = ""
 
-standards = (1459,)
+standards = (1459, 2812)
 url = 'https://tools.ietf.org/html/rfc{}'
 
 for s_num in standards:
