@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import requests
+import html
 
 __appname__     = ""
 __author__      = "Marco Sirabella"
@@ -17,40 +18,14 @@ __module__      = ""
 standards = (1459,)
 url = 'https://tools.ietf.org/html/rfc{}'
 
-pyth_str = '''def test_{cmd}(self):
-    """
-    parameters: {params}
-    """
-    self.bot.command['{cmd}']({args})
-'''
-def process_command(command):
-    cmd = command[0].split()
-    cmd = cmd[1]
-    p = ''
-    args = []
-    if 'parameters:' in command[1].lower():
-        p = command[1]
-        p = p[p.find(':')+1:]
-        p = p.replace('&lt;', '<')
-        p = p.replace('&gt;', '>')
-        args = p
-        if 'None' in args:
-            args = []
-        else:
-            while '[' in args or ']' in args:
-                args = args[0:args.find('[')] + args[args.find(']')+1:]
-            while '{' in args or '}' in args:
-                args = args[0:args.find('{')] + args[args.find('}')+1:]
-            args = [a.strip().replace('<', '').replace('>', '').replace(' ', '_') for a in args.split('> <')]
-    print(pyth_str.format(cmd=cmd, params=p, args=', '.join(args)))
-    return cmd
-
 for s_num in standards:
-    r =  requests.get(url.format(s_num))
-    lines = r.text.split('\n')
-    for i, line in enumerate(lines):
-        if 'command: ' in line.lower():
-            process_command(lines[i:i+2])
+    with open('RFC{}_commands.list'.format(s_num), 'w') as fp:
+        r =  requests.get(url.format(s_num))
+        lines = r.text.split('\n')
+        for i, line in enumerate(lines):
+            if 'command:' in line.lower():
+                    fp.write(html.unescape(' '.join(w.strip() for w in lines[i:i+2])))
+                    fp.write('\n')
 """
 test_command = ['Command: PRIVMSG',
 'Parameters: &lt;receiver&gt;{,&lt;receiver&gt;} &lt;text to be sent&gt;']
