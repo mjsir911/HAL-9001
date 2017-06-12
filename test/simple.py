@@ -44,16 +44,19 @@ class MessageCase(unittest.TestCase):
                             ] # remove chanel from channels
                     self.bot.everything.remove(self)
 
-        bot.everything.append(SaySomethingThenQuit(bot))
+        bot.addMod(SaySomethingThenQuit)
 
+        self.assertEquals(len(bot.everything), 1)
         self.assertNotIn('#bot-test', bot.channels)
 
         bot.step()
 
+        self.assertEquals(len(bot.everything), 1)
         self.assertIn('#bot-test', self.bot.channels)
 
         bot.step()
 
+        self.assertEquals(len(bot.everything), 0)
         self.assertNotIn('#bot-test', self.bot.channels)
 
         time.sleep(1)
