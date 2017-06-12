@@ -4,6 +4,8 @@
 import requests
 import html
 
+import __init__
+
 __appname__     = ""
 __author__      = "Marco Sirabella"
 __copyright__   = ""
@@ -19,7 +21,7 @@ standards = (1459,)
 url = 'https://tools.ietf.org/html/rfc{}'
 
 for s_num in standards:
-    with open('RFC{}_commands.list'.format(s_num), 'w') as fp:
+    with open('{}/RFC{}_commands.list'.format(__init__.path, s_num), 'w') as fp:
         r =  requests.get(url.format(s_num))
         lines = r.text.split('\n')
         for i, line in enumerate(lines):

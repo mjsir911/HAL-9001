@@ -7,10 +7,8 @@ import os
 import time
 import collections
 
-try:
-    import __init__
-except:
-    from . import __init__
+import __init__
+
 
 __appname__     = ""
 __author__      = "Marco Sirabella"
