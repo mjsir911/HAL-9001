@@ -20,7 +20,7 @@ __all__         = []
 
 
 class MessageCase(unittest.TestCase):
-    def testSimpleModule(cls):
+    def testSimpleModule(self):
         from HAL_9001.bot import Bot
         from HAL_9001.abc import Address, Ident
         addr = Address('irc.freenode.net', 6666)
