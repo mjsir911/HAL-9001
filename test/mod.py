@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import unittest
 __appname__     = ""
 __author__      = "Marco Sirabella"
 __copyright__   = ""
