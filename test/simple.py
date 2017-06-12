@@ -46,7 +46,7 @@ class MessageCase(unittest.TestCase):
 
         bot.everything.append(SaySomethingThenQuit(bot))
 
-        self.assertNotIn('#bot-test', self.bot.channels)
+        self.assertNotIn('#bot-test', bot.channels)
 
         bot.step()
 
