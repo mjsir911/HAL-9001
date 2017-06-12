@@ -15,3 +15,6 @@ class Bot:
     def step(self):
         for x in self.everything:
             x()
+
+    def addMod(self, com):
+        self.everything.append(com(self))
