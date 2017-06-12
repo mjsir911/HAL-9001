@@ -42,7 +42,7 @@ class MessageCase(unittest.TestCase):
                 else:
                     self.bot.everything.remove(self)
 
-        cls.bot.everything.append(SaySomethingThenQuit(self.bot))
+        cls.bot.everything.append(SaySomethingThenQuit(cls.bot))
         cls.bot()
         time.sleep(1)
 
