@@ -3,6 +3,7 @@
 
 import sys
 import os
+
 sys.path.insert(1,
     os.path.split(os.path.dirname(os.path.abspath(__file__)))[0] + '/src/'
 )
@@ -18,4 +19,3 @@ __maintainers__ = "Marco Sirabella"
 __email__       = "msirabel@gmail.com"
 __status__      = "Prototype"  # "Prototype", "Development" or "Production"
 __module__      = ""
-__all__         = ['simple.MessageCase']
