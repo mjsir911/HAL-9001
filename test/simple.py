@@ -75,7 +75,7 @@ class RFC_Type(type):
 
         with open(
                 '{}/{}_commands.list'.format(
-                    os.path.dirname(os.path.abspath(__file__)),
+                    __init__.__path__,
                     spec
                 )) as fp:
             for line in fp.readlines():

@@ -19,3 +19,4 @@ __maintainers__ = "Marco Sirabella"
 __email__       = "msirabel@gmail.com"
 __status__      = "Prototype"  # "Prototype", "Development" or "Production"
 __module__      = ""
+__path__        = os.path.dirname(os.path.abspath(__file__))
