@@ -40,6 +40,9 @@ class MessageCase(unittest.TestCase):
                     self.bot.command['PRIVMSG']('Hello world')
                     self.spoken = True
                 else:
+                    del self.bot.channels[
+                            self.bot.channels.index(self.channel)
+                            ] # remove chanel from channels
                     self.bot.everything.remove(self)
 
         cls.bot.everything.append(SaySomethingThenQuit(cls.bot))
@@ -47,7 +50,7 @@ class MessageCase(unittest.TestCase):
         time.sleep(1)
 
     def testConfirmChannelConnection(self):
-        assert '#bot-test' not in self.bot.everything
+        assert '#bot-test' not in self.bot.channels
 
 if __name__ == '__main__':
     unittest.main()
