@@ -50,7 +50,7 @@ class MessageCase(unittest.TestCase):
         time.sleep(1)
 
     def testConfirmChannelConnection(self):
-        assert '#bot-test' not in self.bot.channels
+        self.assertNotIn('#bot-test', self.bot.channels)
 
 if __name__ == '__main__':
     unittest.main()
