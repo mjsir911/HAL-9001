@@ -20,14 +20,13 @@ __all__         = []
 
 
 class MessageCase(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
+    def testSimpleModule(cls):
         from HAL_9001.bot import Bot
         from HAL_9001.abc import Address, Ident
         addr = Address('irc.freenode.net', 6666)
         identy = Ident('hal', 'irc.freenode.net', 'hal')
         tmpdir = tempfile.gettempdir()
-        cls.bot = Bot(addr, identy, tmpdir)
+        bot = Bot(addr, identy, tmpdir)
         class SaySomethingThenQuit():
             def __init__(self, bot):
                 self.bot = bot
@@ -45,12 +44,21 @@ class MessageCase(unittest.TestCase):
                             ] # remove chanel from channels
                     self.bot.everything.remove(self)
 
-        cls.bot.everything.append(SaySomethingThenQuit(cls.bot))
-        cls.bot()
+        bot.everything.append(SaySomethingThenQuit(bot))
+
+        self.assertNotIn('#bot-test', self.bot.channels)
+
+        bot.step()
+
+        self.assertIn('#bot-test', self.bot.channels)
+
+        bot.step()
+
+        self.assertNotIn('#bot-test', self.bot.channels)
+
         time.sleep(1)
 
-    def testConfirmChannelConnection(self):
-        self.assertNotIn('#bot-test', self.bot.channels)
+
 
 if __name__ == '__main__':
     unittest.main()
