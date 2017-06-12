@@ -63,9 +63,12 @@ class RFC_Type(type):
             """
             parameters: {}
             """.format(p)
+
             self.bot.command[name](*args)
 
-        attrs['test_{}'.format(name)] = wrapper
+        wrapper.__name__ = 'test_{}'.format(name)
+
+        attrs[wrapper.__name__] = wrapper
 
     def __new__(cls, name, bases, attrs):
 
