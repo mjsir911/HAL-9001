@@ -14,13 +14,9 @@ __email__       = "msirabel@gmail.com"
 __status__      = "Prototype"  # "Prototype", "Development" or "Production"
 __module__      = ""
 
-class Address(typing.NamedTuple):
-    """ Named tuple for server addresses """
-    host: str
-    port: int
+Address = typing.NamedTuple("Address", [('host', str), ('port', int)])
+Address.__doc__ = """ Named tuple for server addresses """
 
-class Ident(typing.NamedTuple):
-    """ Named tuple for identities """
-    ident: str
-    host: str
-    realname: str
+Ident = typing.NamedTuple("Ident", [('ident', str), ('host', str), ('realname',
+    str)])
+Ident.__doc__ = """ Named tuple for identities """
