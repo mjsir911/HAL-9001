@@ -95,6 +95,7 @@ class Bracketted():
     @classmethod
     def split(cls, string):
         string = string.strip()
+        string = string.replace('<space>', ' ')
         fbrack = cls.lowest_bracket(string)
         if fbrack[1] < 0:
             return (cls(string),)
