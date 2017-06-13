@@ -130,12 +130,3 @@ class Bracketted():
             return self.bracket + ' '.join(str(b) for b in self.contents) + self.bracket_map[self.bracket]
         else:
             return self.bracket + str(self.contents) + self.bracket_map[self.bracket]
-
-
-st = '<channel>{<channel>} [<key>{<key>}]'
-st = '<channel>{,<channel>} [<key>{,<key>}]'
-#print(st)
-z = Bracketted.splitstr(st)
-#print(z)
-#z
-#print(z)
