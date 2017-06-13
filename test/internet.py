@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import requests
+import inspect
 import html
 
 import __init__
@@ -21,15 +22,16 @@ standards = (1459, 2812)
 url = 'https://tools.ietf.org/html/rfc{}'
 
 for s_num in standards:
-    with open('{}/RFC{}_commands.list'.format(__init__.__path__, s_num), 'w') as fp:
-        r =  requests.get(url.format(s_num))
-        lines = r.text.split('\n')
-        for i, line in enumerate(lines):
-            if 'command:' in line.lower():
-                    fp.write(html.unescape(' '.join(w.strip() for w in lines[i:i+2])))
-                    fp.write('\n')
+    path = '{}/RFC{}_commands.list'.format(__init__.__path__, s_num)
+    if not os.path.exists(path):
+        with open(path, 'w') as fp:
+            r =  requests.get(url.format(s_num))
+            lines = r.text.split('\n')
+            for i, line in enumerate(lines):
+                if 'command:' in line.lower():
+                        fp.write(html.unescape(' '.join(w.strip() for w in lines[i:i+2])))
+                        fp.write('\n')
 
-def p
 """
 test_command = ['Command: PRIVMSG',
 'Parameters: &lt;receiver&gt;{,&lt;receiver&gt;} &lt;text to be sent&gt;']
