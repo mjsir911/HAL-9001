@@ -3,10 +3,10 @@
 
 import unittest
 import tempfile
+import inspect
 import os
 import time
 import collections
-import inspect
 import internet
 
 import __init__
