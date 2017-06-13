@@ -46,31 +46,46 @@ class RFC_Type(type):
 
         p = ''
         args = []
+        sigerr = False
+        sig = None
         if command and 'parameters:' in command[0].lower():
             p = ' '.join(command)
             p = p[p.find(':')+1:].strip()
-
-            print('--------' * 4)
-            print(name)
-            print(p)
-            try:
-                z = internet.Bracketted.splitstr(p)
-            except:
-                return
-            uniques = {}
-            if isinstance(z, collections.abc.Iterable):
-                args = internet.flatten(i.parametrize(uniques=uniques) for i in z)
+            if p == 'None':
+                sig = inspect.Signature()
             else:
-                args = (z.parametrize(uniques=uniques),)
-            print(args)
-            sig = inspect.Signature(args)
-            print(sig)
-
+                try:
+                    z = internet.Bracketted.splitstr(p)
+                except Exception as e:
+                    """
+                    print('-' * 64)
+                    print(name)
+                    print(p)
+                    print(e)
+                    print('-' * 64)
+                    """
+                    sigerr = True
+                else:
+                    uniques = {}
+                    if isinstance(z, collections.abc.Iterable):
+                        args = tuple(i.parametrize(uniques=uniques) for i in z)
+                    else:
+                        args = (z.parametrize(uniques=uniques),)
+                    args = internet.flatten(args)
+        if not sigerr:
+            try:
+                sig = inspect.Signature(args)
+            except Exception as e:
+                args = args[0], args[2], args[1]
+                sig = inspect.Signature(args)
 
         def wrapper(self):
             """
             parameters: {}
             """.format(p)
+
+            if sig:
+                self.assertEquals(inspect.signature(self.bot.command[name]), sig)
 
             self.bot.command[name](*args)
 
