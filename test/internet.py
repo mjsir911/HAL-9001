@@ -50,54 +50,62 @@ def flatten(l):
             t.append(sl)
     return tuple(t)
 
+class Signature(inspect.Signature):
+    def __eq__(self, other):
+        return [p.kind for p in list(self.parameters.values())] == [p.kind for
+                p in list(other.parameters.values())]
+
+
 class Bracketted():
     bracket_map  = {'<': '>', '{': '}', '[': ']'}
-    def __init__(self, contents, bracket):
-        self.bracket  = bracket
-        self.contents = contents
 
     @classmethod
-    def splitstr(cls, string):
-        brack = min([string.find(b) for b in cls.bracket_map if string.find(b) !=
-                -1])
-        first = string[brack: string.find( cls.bracket_map[string[brack]]) + 1]
-
-        string = string.replace(first, '', 1).strip()
-
-        if string == '[]':
-            string = []
-        """
-        print('ostring:', string)
-        print('fbrack:', brack)
-        print('first:', first)
-        print('string:', string)
-        print(type(string))
-        #print(string, first)
-        """
-        if not string:
-            return cls.fromstr(first)
-        if not first:
-            return cls.fromstr(string)
-
-        return flatten([cls.fromstr(first), cls.splitstr(string)])
+    def find_complementary_brackets(cls, string, index):
+        fbrack = string[index], index + 1
+        count = 0
+        for i, c in enumerate(string[fbrack[1]:]):
+            if c == fbrack[0]:
+                count += 1
+            elif c == cls.bracket_map[fbrack[0]]:
+                if count:
+                    count -= 1
+                else:
+                    lbrack = c, i + fbrack[1]
+        return lbrack
 
     @classmethod
-    def fromstr(cls, string):
+    def lowest_bracket(cls, string):
+        for i, c in enumerate(string):
+            if c in cls.bracket_map:
+                return c, i
+        return ('', -1)
+
+    def __init__(self, full_params):
+        full_params = full_params.replace(',', '')
+        bracket = self.lowest_bracket(full_params)
+        params = full_params[bracket[1] + 1:
+                self.find_complementary_brackets(full_params, bracket[1])[1]]
+
+        if self.lowest_bracket(params)[1] >= 0:
+            params = self.split(params)
+
+        self.bracket = bracket[0]
+        self.contents = params
+
+    @classmethod
+    def split(cls, string):
         string = string.strip()
-        string = string.replace(',', '')
-        if not string:
-            return
-        if string[-1] == cls.bracket_map[string[0]]:
-            inside = string[1: -1]
-            inside_brackets = [inside.find(b) for b in cls.bracket_map if
-                    inside.find(b) != -1]
-            if len(inside_brackets) == 0:
-                return cls(inside, string[0])
-            else:
-                return cls(cls.splitstr(inside), string[0])
-        else:
-            return cls.splitstr(string)
+        fbrack = cls.lowest_bracket(string)
+        if fbrack[1] < 0:
+            return (cls(string),)
 
+        lbrack = cls.find_complementary_brackets(string, fbrack[1])
+
+        first = cls(string[fbrack[1]: lbrack[1] + 1].strip())
+        rest = string[:fbrack[1]] + string[lbrack[1] + 1:].strip()
+        if rest:
+            return (first,) + cls.split(rest)
+        return (first,)
     def parametrize(self, kind=inspect.Parameter.POSITIONAL_ONLY, uniques=None):
         if uniques is None:
             uniques = {}
@@ -118,9 +126,21 @@ class Bracketted():
         if isinstance(self.contents, str):
             return inspect.Parameter(self.contents.replace(' ', '_'), kind)
         elif isinstance(self.contents, collections.abc.Iterable):
-            return [each.parametrize(kind, uniques) for each in self.contents]
-        elif isinstance(self.contents, type(self)):
-            return self.contents.parametrize(kind, uniques)
+            z = []
+            for each in self.contents:
+                z.append(each.parametrize(kind, uniques))
+            return z
+
+    @classmethod
+    def signature(cls, string):
+        if string == 'None':
+            return Signature()
+        z = cls.split(string)
+
+        uniques = {}
+        args = tuple(i.parametrize(uniques=uniques) for i in z)
+        args = flatten(args)
+        return Signature(args)
 
 
     def __repr__(self):
