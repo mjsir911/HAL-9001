@@ -85,7 +85,7 @@ class RFC_Type(type):
             """.format(p)
 
             if sig:
-                self.assertEquals(inspect.signature(self.bot.command[name]), sig)
+                self.assertEqual(inspect.signature(self.bot.command[name]), sig)
 
             self.bot.command[name](*args)
 
