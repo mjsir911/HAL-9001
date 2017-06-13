@@ -3,6 +3,7 @@
 
 import requests
 import inspect
+import os
 import html
 
 import __init__
