@@ -1,6 +1,6 @@
 class Bot:
 
-    def PRIVMSG(self, msg):
+    def PRIVMSG(self, msgtarget, text_to_be_sent):
         pass
 
     def __init__(self, addr, identy, tempdir):
