@@ -75,10 +75,9 @@ class RFC_Type(type):
             """
             parameters: {}
             """.format(p)
-
+            self.assertIn(name, self.bot.command.keys())
             if sig:
                 self.assertEqual(inspect.signature(self.bot.command[name]), sig)
-
             self.bot.command[name](*args)
 
         wrapper.__name__ = 'test_{}'.format(name)
