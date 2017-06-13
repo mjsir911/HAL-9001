@@ -20,18 +20,22 @@ __status__      = "Prototype"  # "Prototype", "Development" or "Production"
 __module__      = ""
 
 standards = (1459, 2812)
-url = 'https://tools.ietf.org/html/rfc{}'
+url = 'https://tools.ietf.org/html/{}'
 
-for s_num in standards:
-    path = '{}/RFC{}_commands.list'.format(__init__.__path__, s_num)
+def get_standard(s_name):
+    path = '{}/{}.list'.format(__init__.__path__, s_name)
     if not os.path.exists(path):
+        print('file not found, downloading')
+        r = requests.get(url.format(s_name))
+        if r.status_code is not 200:
+            raise Exception(r.status_code)
+        lines = r.text.split('\n')
         with open(path, 'w') as fp:
-            r =  requests.get(url.format(s_num))
-            lines = r.text.split('\n')
             for i, line in enumerate(lines):
                 if 'command:' in line.lower():
-                        fp.write(html.unescape(' '.join(w.strip() for w in lines[i:i+2])))
-                        fp.write('\n')
+                    fp.write(html.unescape(' '.join(w.strip() for w in lines[i:i+2])))
+                    fp.write('\n')
+    return open(path, 'r')
 
 """
 test_command = ['Command: PRIVMSG',

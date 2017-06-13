@@ -93,7 +93,7 @@ class RFC_Type(type):
 
         spec = name.replace('_Case', '')
 
-        with open('{}/{}_commands.list'.format(__init__.__path__, spec)) as fp:
+        with internet.get_standard(spec) as fp:
             for line in fp.readlines():
                 cls.process_command(attrs, line)
 
