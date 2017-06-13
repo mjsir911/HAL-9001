@@ -6,6 +6,8 @@ import tempfile
 import os
 import time
 import collections
+import inspect
+import internet
 
 import __init__
 
@@ -31,6 +33,8 @@ def testBot():
 
         return Bot(addr, identy, tmpdir)
 
+
+
 class RFC_Type(type):
     @classmethod
     def process_command(cls, attrs, command):
@@ -46,18 +50,22 @@ class RFC_Type(type):
             p = ' '.join(command)
             p = p[p.find(':')+1:].strip()
 
-            args = p
-            if 'None' in args:
-                args = []
+            print('--------' * 4)
+            print(name)
+            print(p)
+            try:
+                z = internet.Bracketted.splitstr(p)
+            except:
+                return
+            uniques = {}
+            if isinstance(z, collections.abc.Iterable):
+                args = internet.flatten(i.parametrize(uniques=uniques) for i in z)
             else:
-                while '[' in args or ']' in args:
-                    args = args[0:args.find('[')] + args[args.find(']')+1:]
+                args = (z.parametrize(uniques=uniques),)
+            print(args)
+            sig = inspect.Signature(args)
+            print(sig)
 
-                while '{' in args or '}' in args:
-                    args = args[0:args.find('{')] + args[args.find('}')+1:]
-
-                args = [a.strip().replace('<', '').replace('>', '').replace(
-                    ' ', '_') for a in args.split('> <')]
 
         def wrapper(self):
             """
@@ -90,6 +98,7 @@ class RFC1459_Case(unittest.TestCase, metaclass=RFC_Type):
     def setUp(cls):
         cls.bot = testBot()
 
+'''
 class RFC2812_Case(unittest.TestCase, metaclass=RFC_Type):
     """
     https://tools.ietf.org/html/rfc2812
@@ -98,3 +107,4 @@ class RFC2812_Case(unittest.TestCase, metaclass=RFC_Type):
     @classmethod
     def setUp(cls):
         cls.bot = testBot()
+        '''
