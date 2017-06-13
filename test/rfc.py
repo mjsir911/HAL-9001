@@ -51,33 +51,25 @@ class RFC_Type(type):
         if command and 'parameters:' in command[0].lower():
             p = ' '.join(command)
             p = p[p.find(':')+1:].strip()
-            if p == 'None':
-                sig = inspect.Signature()
-            else:
-                try:
-                    z = internet.Bracketted.splitstr(p)
-                except Exception as e:
-                    """
-                    print('-' * 64)
-                    print(name)
-                    print(p)
-                    print(e)
-                    print('-' * 64)
-                    """
-                    sigerr = True
-                else:
-                    uniques = {}
-                    if isinstance(z, collections.abc.Iterable):
-                        args = tuple(i.parametrize(uniques=uniques) for i in z)
-                    else:
-                        args = (z.parametrize(uniques=uniques),)
-                    args = internet.flatten(args)
-        if not sigerr:
+        try:
+            sig = internet.Bracketted.signature(p)
+            """
+            print('-' * 64)
+            print(name)
+            print('=' * 64)
+            print(p)
+            print('*' * 64)
+            print(sig)
+            print('-' * 64)
+            """
+        except ValueError as e:
             try:
-                sig = inspect.Signature(args)
-            except Exception as e:
                 args = args[0], args[2], args[1]
                 sig = inspect.Signature(args)
+            except Exception:
+                pass
+        except Exception as e:
+            pass
 
         def wrapper(self):
             """
@@ -90,7 +82,6 @@ class RFC_Type(type):
             self.bot.command[name](*args)
 
         wrapper.__name__ = 'test_{}'.format(name)
-
         attrs[wrapper.__name__] = wrapper
 
     def __new__(cls, name, bases, attrs):
