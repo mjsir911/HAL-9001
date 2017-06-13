@@ -24,6 +24,14 @@ __status__      = "Prototype"  # "Prototype", "Development" or "Production"
 __module__      = ""
 __all__         = []
 
+if __name__ == '__main__':
+    def vprint(*args, **kwargs):
+        print(*args, **kwargs)
+else:
+    def vprint(*args, **kwargs):
+        pass
+
+
 def testBot():
         from HAL_9001.bot import Bot
         from HAL_9001.abc import Address, Ident
@@ -53,15 +61,13 @@ class RFC_Type(type):
             p = p[p.find(':')+1:].strip()
         try:
             sig = internet.Bracketted.signature(p)
-            """
-            print('-' * 64)
-            print(name)
-            print('=' * 64)
-            print(p)
-            print('*' * 64)
-            print(sig)
-            print('-' * 64)
-            """
+            vprint('-' * 64)
+            vprint(name)
+            vprint('=' * 64)
+            vprint(p)
+            vprint('*' * 64)
+            vprint(sig)
+            vprint('-' * 64)
         except ValueError as e:
             try:
                 args = args[0], args[2], args[1]
