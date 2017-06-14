@@ -113,7 +113,10 @@ class Bracketted():
         if rest:
             return (first,) + cls.split(rest)
         return (first,)
-    def parametrize(self, maximum=0, kind=inspect.Parameter.POSITIONAL_ONLY, uniques=None):
+    def parametrize(self, maximum=0, uniques=None):
+
+        enum = inspect._ParameterKind
+
         if uniques is None:
             uniques = {}
         if self.contents in uniques:
@@ -123,21 +126,34 @@ class Bracketted():
             uniques[self.contents] = 0
         if self.bracket == '[':
             if maximum < 2:
-                kind = inspect.Parameter.POSITIONAL_OR_KEYWORD
+                maximum = 1
             else:
-                kind = inspect.Parameter.KEYWORD_ONLY
+                maximum = 3
         elif self.bracket == '{':
-            if maximum < 2:
-                kind = inspect.Parameter.VAR_POSITIONAL
+            if maximum <= 2:
+                maximum = 2
             else:
-                kind = inspect.Parameter.VAR_KEYWORD
+                maximum = 4
+
+        if maximum < 2:
+            kind = inspect.Parameter.POSITIONAL_OR_KEYWORD
+        elif maximum == 2:
+            kind = inspect.Parameter.VAR_POSITIONAL
+        elif 2 < maximum < 4:
+            kind = inspect.Parameter.KEYWORD_ONLY
+        elif maximum == 4:
+            kind = inspect.Parameter.VAR_KEYWORD
+        else:
+            print(maximum, 'hi')
+
         if isinstance(self.contents, str):
-            return inspect.Parameter(self.contents.replace(' ', '_'), kind)
+            return maximum, inspect.Parameter(self.contents.replace(' ', '_'), kind)
         elif isinstance(self.contents, collections.abc.Iterable):
             z = []
             for each in self.contents:
-                z.append(each.parametrize(max((maximum, int(kind))), kind, uniques))
-            return z
+                maximum, p = each.parametrize(maximum, uniques)
+                z.append(p)
+            return maximum, z
 
     @classmethod
     def signature(cls, string):
@@ -146,7 +162,11 @@ class Bracketted():
         z = cls.split(string)
 
         uniques = {}
-        args = tuple(i.parametrize(uniques=uniques) for i in z)
+        args = []
+        maximum = 0
+        for i in z:
+            maximum, p = i.parametrize(maximum=maximum, uniques=uniques)
+            args.append(p)
         args = flatten(args)
         return Signature(args)
 
