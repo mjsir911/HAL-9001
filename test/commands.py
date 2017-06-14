@@ -123,15 +123,15 @@ class RFC2812_Case(unittest.TestCase, metaclass=RFC_Type):
 
 class Custom_Case(unittest.TestCase):
 
-    def testC(self):
+    def test_register(self):
         from HAL_9001.bot import Command_Dict
         custom_command_dict = Command_Dict()
 
         name = 'chanserv'
-        @custom_command_dict.something(name)  # TODO: change name
+        @custom_command_dict.register(name)  # TODO: change name
         def chan_command(self, msg):
             return self['PRIVMSG']('chanserv', msg)
 
         bot = testBot(dict=custom_command_dict)
-        self.assertIn(name, self.bot.command.keys())
-        self.bot.command[name]('help')
+        self.assertIn(name, bot.command.keys())
+        bot.command[name]('help')
