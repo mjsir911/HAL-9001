@@ -87,14 +87,18 @@ class Bracketted():
     def __init__(self, full_params):
         full_params = full_params.replace(',', '')
         bracket = self.lowest_bracket(full_params)
-        params = full_params[bracket[1] + 1:
-                self.find_complementary_brackets(full_params, bracket[1])[1]]
+        if bracket[1] < 0:
+            self.bracket = '<'
+            self.contents = full_params
+        else:
+            params = full_params[bracket[1] + 1:
+                    self.find_complementary_brackets(full_params, bracket[1])[1]]
 
-        if self.lowest_bracket(params)[1] >= 0:
-            params = self.split(params)
+            if self.lowest_bracket(params)[1] >= 0:
+                params = self.split(params)
 
-        self.bracket = bracket[0]
-        self.contents = params
+            self.bracket = bracket[0]
+            self.contents = params
 
     @classmethod
     def split(cls, string):
