@@ -70,6 +70,9 @@ class RFC_Type(type):
             vprint([i.kind for i in sig.parameters.values()])
             vprint('-' * 64)
         except ValueError as e:
+            vprint('HIIII')
+            vprint(p, e)
+            vprint(name)
             try:
                 args = args[0], args[2], args[1]
                 sig = inspect.Signature(args)
@@ -77,7 +80,9 @@ class RFC_Type(type):
                 pass
         except Exception as e:
             vprint('error')
-            vprint(p, e)
+            vprint(name)
+            vprint(p)
+            vprint(e)
 
         def wrapper(self):
             """
