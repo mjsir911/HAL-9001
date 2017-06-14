@@ -39,7 +39,7 @@ def testBot(**kwargs):
         identy = Ident('hal', 'irc.freenode.net', 'hal')
         tmpdir = tempfile.gettempdir()
 
-        return Bot(addr, identy, tmpdir)
+        return Bot(addr, identy, tmpdir, **kwargs)
 
 
 
