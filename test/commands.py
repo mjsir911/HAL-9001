@@ -111,6 +111,7 @@ class RFC1459_Case(unittest.TestCase, metaclass=RFC_Type):
     def setUp(cls):
         cls.bot = testBot()
 
+'''
 class RFC2812_Case(unittest.TestCase, metaclass=RFC_Type):
     """
     https://tools.ietf.org/html/rfc2812
@@ -119,6 +120,7 @@ class RFC2812_Case(unittest.TestCase, metaclass=RFC_Type):
     @classmethod
     def setUp(cls):
         cls.bot = testBot()
+'''
 
 class Custom_Case(unittest.TestCase):
 
