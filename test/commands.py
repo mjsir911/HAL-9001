@@ -81,14 +81,15 @@ class RFC_Type(type):
                 parameters: {}
                 """.format(p)
                 self.assertIn(name, self.bot.command.keys())
-                if sig:
-                    self.assertEqual(inspect.signature(self.bot.command[name]), sig)
-                args, kwargs = sig.default()
-                with self.subTest(args=args, kwargs=kwargs):
-                    self.bot.command[name](*args, **kwargs)
+                self.assertEqual(inspect.signature(self.bot.command[name]), sig)
+                if inspect.signature(self.bot.command[name]) == sig:
+                    args, kwargs = sig.default()
+                    with self.subTest(args=args, kwargs=kwargs):
+                        self.bot.command[name](*args, **kwargs)
 
         wrapper.__name__ = 'test_{}'.format(name)
-        attrs[wrapper.__name__] = wrapper
+        if wrapper.__name__ not in attrs:
+            attrs[wrapper.__name__] = wrapper
 
     def __new__(cls, name, bases, attrs):
 
@@ -110,6 +111,25 @@ class RFC1459_Case(unittest.TestCase, metaclass=RFC_Type):
     def setUp(cls):
         cls.bot = testBot()
 
+    def test_PRIVMSG(self):
+        """ <Signature (receiver, *receiver1, *text_to_be_sent) """
+        cmd = 'PRIVMSG'
+        self.assertIn(cmd, self.bot.command.keys())
+        self.bot.command[cmd]('mjsir911', 'hello world')
+
+    def test_WHOIS(self):
+        """ [<server>] <nickmask>[,<nickmask>[,...]] """
+        cmd = 'WHOIS'
+        self.assertIn(cmd, self.bot.command.keys())
+        self.bot.command[cmd]('jelkner')
+
+    def test_JOIN(self):
+        """ <channel>{,<channel>} [<key>{,<key>}]  """
+        cmd = 'JOIN'
+        self.assertIn(cmd, self.bot.command.keys())
+        self.bot.command[cmd]('#Pact')
+
+
 '''
 class RFC2812_Case(unittest.TestCase, metaclass=RFC_Type):
     """
@@ -129,8 +149,8 @@ class Custom_Case(unittest.TestCase):
 
         name = 'chanserv'
         @custom_command_dict.register(name)  # TODO: change name
-        def chan_command(self, msg):
-            return self['PRIVMSG']('chanserv', msg)
+        def chan_command(msg):
+            return custom_command_dict['PRIVMSG']('chanserv', msg)
 
         bot = testBot(dict=custom_command_dict)
         self.assertIn(name, bot.command.keys())
