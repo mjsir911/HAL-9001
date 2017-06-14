@@ -69,15 +69,6 @@ class RFC_Type(type):
             vprint(sig)
             vprint([i.kind for i in sig.parameters.values()])
             vprint('-' * 64)
-        except ValueError as e:
-            vprint('error')
-            vprint(p, e)
-            vprint(name)
-            try:
-                args = args[0], args[2], args[1]
-                sig = inspect.Signature(args)
-            except Exception:
-                pass
         except Exception as e:
             vprint('error')
             vprint(name)
