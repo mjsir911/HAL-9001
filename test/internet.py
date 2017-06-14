@@ -56,8 +56,10 @@ def flatten(l):
 
 class Signature(inspect.Signature):
     def __eq__(self, other):
-        return [p.kind for p in list(self.parameters.values())] == [p.kind for
-                p in list(other.parameters.values())]
+        return all(p.kind == o.kind for p, o in zip(self.parameters.values(),
+            other.parameters.values()))
+        #return [p.kind for p in list(self.parameters.values())] == [p.kind for
+                #p in list(other.parameters.values())]
 
 
 class Bracketted():
