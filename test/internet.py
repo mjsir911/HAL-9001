@@ -56,6 +56,8 @@ def flatten(l):
 
 class Signature(inspect.Signature):
     def __eq__(self, other):
+        if len(self.parameters.values()) != len(other.parameters.values()):
+            return False
         return all(p.kind == o.kind for p, o in zip(self.parameters.values(),
             other.parameters.values()))
 
