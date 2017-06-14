@@ -2,10 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-import tempfile
-import time
-import collections
-
 __appname__     = ""
 __author__      = "Marco Sirabella"
 __copyright__   = ""
@@ -16,17 +12,13 @@ __maintainers__ = "Marco Sirabella"
 __email__       = "msirabel@gmail.com"
 __status__      = "Prototype"  # "Prototype", "Development" or "Production"
 __module__      = ""
-__all__         = []
 
-
+@unittest.skip("testing skipping")
 class MessageCase(unittest.TestCase):
     def testSimpleModule(self):
-        from HAL_9001.bot import Bot
-        from HAL_9001.abc import Address, Ident
-        addr = Address('irc.freenode.net', 6666)
-        identy = Ident('hal', 'irc.freenode.net', 'hal')
-        tmpdir = tempfile.gettempdir()
-        bot = Bot(addr, identy, tmpdir)
+
+        bot = testBot()
+
         class SaySomethingThenQuit():
             def __init__(self, bot):
                 self.bot = bot
@@ -35,7 +27,7 @@ class MessageCase(unittest.TestCase):
             def __call__(self):
                 if not self.spoken:
                     if self.channel not in self.bot.channels:
-                        self.bot.channels.append(channel)
+                        self.bot.channels.append(self.channel)
                     self.bot.command['PRIVMSG']('Hello world')
                     self.spoken = True
                 else:
@@ -44,21 +36,20 @@ class MessageCase(unittest.TestCase):
                             ] # remove chanel from channels
                     self.bot.everything.remove(self)
 
-        bot.everything.append(SaySomethingThenQuit(bot))
+        bot.addMod(SaySomethingThenQuit)
 
-        self.assertNotIn('#bot-test', bot.channels)
+        with self.subTest():
+            self.assertEquals(len(bot.everything), 1)
+            self.assertNotIn('#bot-test', bot.channels)
 
-        bot.step()
+        with self.subTest():
+            bot.step()
+            self.assertEquals(len(bot.everything), 1)
+            self.assertIn('#bot-test', bot.channels)
 
-        self.assertIn('#bot-test', self.bot.channels)
-
-        bot.step()
-
-        self.assertNotIn('#bot-test', self.bot.channels)
+        with self.subTest():
+            bot.step()
+            self.assertEquals(len(bot.everything), 0)
+            self.assertNotIn('#bot-test', bot.channels)
 
         time.sleep(1)
-
-
-
-if __name__ == '__main__':
-    unittest.main()
