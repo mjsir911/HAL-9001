@@ -46,28 +46,28 @@ class Command(dict):
         def _(channel, user, comment=""): pass
 
         @self.register('version')
-        def _(server=""): pass
+        def _(server=None): pass
 
         @self.register('stats')
-        def _(query, server=""): pass
+        def _(query, server=None): pass
 
         @self.register('links')
         def _(): pass
 
         @self.register('time')
-        def _(server=""): pass
+        def _(server=None): pass
 
         @self.register('connect')
-        def _(target_server, port=0, remote_server=""): pass
+        def _(target_server, port=0, remote_server=None): pass
 
         @self.register('trace')
-        def _(server=""): pass
+        def _(server=None): pass
 
         @self.register('admin')
-        def _(server=""): pass
+        def _(server=None): pass
 
         @self.register('info')
-        def _(server=""): pass
+        def _(server=None): pass
 
         @self.register('privmsg')
         def _(self, msgtarget, text_to_be_sent): pass
@@ -106,16 +106,16 @@ class Command(dict):
         def _(): pass
 
         @self.register('summon')
-        def _(user, server=""): pass
+        def _(user, server=None): pass
 
         @self.register('users')
-        def _(server=""): pass
+        def _(server=None): pass
 
         @self.register('wallops')
         def _(text): pass
 
         @self.register('userhost')
-        def _(nick, nick2="", nick3="", nick4="", nick5=""): pass
+        def _(nick, *nicks): pass
 
         @self.register('ison')
         def _(): pass
