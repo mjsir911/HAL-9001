@@ -72,18 +72,20 @@ class RFC_Type(type):
         except Exception as e:
             vprint('error')
             vprint(name)
-            vprint('params={}, error={}'.format(p, e))
-
-        def wrapper(self):
-            """
-            parameters: {}
-            """.format(p)
-            self.assertIn(name, self.bot.command.keys())
-            if sig:
-                self.assertEqual(inspect.signature(self.bot.command[name]), sig)
-            args, kwargs = sig.default()
-            with self.subTest(args=args, kwargs=kwargs):
-                self.bot.command[name](*args, **kwargs)
+            def wrapper(self):
+                self.fail('name: {}, param: {}, err: {}'.format(name, p,
+                'error'))
+        else:
+            def wrapper(self):
+                """
+                parameters: {}
+                """.format(p)
+                self.assertIn(name, self.bot.command.keys())
+                if sig:
+                    self.assertEqual(inspect.signature(self.bot.command[name]), sig)
+                args, kwargs = sig.default()
+                with self.subTest(args=args, kwargs=kwargs):
+                    self.bot.command[name](*args, **kwargs)
 
         wrapper.__name__ = 'test_{}'.format(name)
         attrs[wrapper.__name__] = wrapper
