@@ -111,7 +111,7 @@ class Bracketted():
         if rest:
             return (first,) + cls.split(rest)
         return (first,)
-    def parametrize(self, kind=inspect.Parameter.POSITIONAL_ONLY, uniques=None):
+    def parametrize(self, maximum=0, kind=inspect.Parameter.POSITIONAL_ONLY, uniques=None):
         if uniques is None:
             uniques = {}
         if self.contents in uniques:
@@ -120,20 +120,21 @@ class Bracketted():
         else:
             uniques[self.contents] = 0
         if self.bracket == '[':
-            kind = inspect.Parameter.KEYWORD_ONLY
-        elif self.bracket == '{':
-            if kind == inspect.Parameter.POSITIONAL_ONLY:
-                kind = inspect.Parameter.VAR_POSITIONAL
-            elif kind == inspect.Parameter.KEYWORD_ONLY:
-                kind = inspect.Parameter.VAR_KEYWORD
+            if maximum < 2:
+                kind = inspect.Parameter.POSITIONAL_OR_KEYWORD
             else:
-                print('WARNING,', kind)
+                kind = inspect.Parameter.KEYWORD_ONLY
+        elif self.bracket == '{':
+            if maximum < 2:
+                kind = inspect.Parameter.VAR_POSITIONAL
+            else:
+                kind = inspect.Parameter.VAR_KEYWORD
         if isinstance(self.contents, str):
             return inspect.Parameter(self.contents.replace(' ', '_'), kind)
         elif isinstance(self.contents, collections.abc.Iterable):
             z = []
             for each in self.contents:
-                z.append(each.parametrize(kind, uniques))
+                z.append(each.parametrize(max((maximum, int(kind))), kind, uniques))
             return z
 
     @classmethod
