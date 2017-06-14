@@ -81,7 +81,9 @@ class RFC_Type(type):
             self.assertIn(name, self.bot.command.keys())
             if sig:
                 self.assertEqual(inspect.signature(self.bot.command[name]), sig)
-            self.bot.command[name](*args)
+            args, kwargs = sig.default()
+            with self.subTest(args=args, kwargs=kwargs):
+                self.bot.command[name](*args, **kwargs)
 
         wrapper.__name__ = 'test_{}'.format(name)
         attrs[wrapper.__name__] = wrapper

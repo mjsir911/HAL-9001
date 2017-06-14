@@ -59,6 +59,12 @@ class Signature(inspect.Signature):
         return all(p.kind == o.kind for p, o in zip(self.parameters.values(),
             other.parameters.values()))
 
+    def default(self):
+        args = tuple(i.default for i in self.parameters.values() if i.kind <= 2)
+        kwargs = {i.name: i.default for i in self.parameters.values() if i.kind > 2}
+        return args, kwargs
+
+
 
 class Bracketted():
     bracket_map  = {'<': '>', '{': '}', '[': ']'}
