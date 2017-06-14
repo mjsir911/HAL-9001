@@ -159,7 +159,7 @@ class Bracketted():
 
     @classmethod
     def signature(cls, string):
-        if string == 'None':
+        if string == 'None' or not string:
             return Signature()
         z = cls.split(string)
 
