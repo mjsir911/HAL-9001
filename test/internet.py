@@ -5,6 +5,7 @@ import requests
 import inspect
 import os
 import html
+import collections
 
 import __init__
 
@@ -22,6 +23,7 @@ __module__       = ""
 standards = (1459, 2812)
 url = 'https://tools.ietf.org/html/{}'
 
+
 def get_standard(s_name):
 	path = '{}/{}.list'.format(__init__.__path__, s_name)
 	if not os.path.exists(path):
@@ -33,9 +35,10 @@ def get_standard(s_name):
 		with open(path, 'w') as fp:
 			for i, line in enumerate(lines):
 				if 'command:' in line.lower():
-					fp.write(html.unescape(' '.join(w.strip() for w in lines[i:i+2])))
+					fp.write(html.unescape(' '.join(w.strip() for w in lines[i:i + 2])))
 					fp.write('\n')
 	return open(path, 'r')
+
 
 """
 test_command = ['Command: PRIVMSG',
@@ -43,7 +46,6 @@ test_command = ['Command: PRIVMSG',
 process_command(test_command)
 """
 
-import collections
 
 def flatten(l):
 	t = []
@@ -54,18 +56,20 @@ def flatten(l):
 			t.append(sl)
 	return tuple(t)
 
+
 class Signature(inspect.Signature):
 	def __eq__(self, other):
 		if len(self.parameters.values()) != len(other.parameters.values()):
 			return False
-		return all(p.kind == o.kind for p, o in zip(self.parameters.values(),
-			other.parameters.values()))
+		return all(
+		    p.kind == o.kind for p, o
+		    in zip(self.parameters.values(), other.parameters.values())
+		)
 
 	def default(self):
 		args = tuple(i.default for i in self.parameters.values() if i.kind <= 2)
 		kwargs = {i.name: i.default for i in self.parameters.values() if i.kind > 2}
 		return args, kwargs
-
 
 
 class Bracketted():
@@ -99,8 +103,10 @@ class Bracketted():
 			self.bracket = '<'
 			self.contents = full_params
 		else:
-			params = full_params[bracket[1] + 1:
-					self.find_complementary_brackets(full_params, bracket[1])[1]]
+			params = full_params[
+			    bracket[1] + 1:
+			    self.find_complementary_brackets(full_params, bracket[1])[1]
+			]
 
 			if self.lowest_bracket(params)[1] >= 0:
 				params = self.split(params)
@@ -123,6 +129,7 @@ class Bracketted():
 		if rest:
 			return (first,) + cls.split(rest)
 		return (first,)
+
 	def parametrize(self, maximum=0, uniques=None):
 
 		enum = inspect._ParameterKind
@@ -180,11 +187,12 @@ class Bracketted():
 		args = flatten(args)
 		return Signature(args)
 
-
 	def __repr__(self):
 		if isinstance(self.contents, str):
 			return self.bracket + self.contents + self.bracket_map[self.bracket]
 		elif isinstance(self.contents, collections.abc.Iterable):
-			return self.bracket + ' '.join(str(b) for b in self.contents) + self.bracket_map[self.bracket]
+			return self.bracket + ' '.join(
+			    str(b) for b in self.contents
+			) + self.bracket_map[self.bracket]
 		else:
 			return self.bracket + str(self.contents) + self.bracket_map[self.bracket]
