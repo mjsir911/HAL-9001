@@ -42,7 +42,6 @@ def testBot(**kwargs):
 		return Bot(addr, identy, tmpdir, **kwargs)
 
 
-
 class RFC_Type(type):
 	@classmethod
 	def process_command(cls, attrs, command):
@@ -58,7 +57,7 @@ class RFC_Type(type):
 		sig = None
 		if command and 'parameters:' in command[0].lower():
 			p = ' '.join(command)
-			p = p[p.find(':')+1:].strip()
+			p = p[p.find(':') + 1:].strip()
 		try:
 			sig = internet.Bracketted.signature(p)
 			vprint('-' * 64)
@@ -72,12 +71,13 @@ class RFC_Type(type):
 		except Exception as e:
 			vprint('error')
 			vprint(name)
+
 			def wrapper(self):
 				self.fail('name: {}, param: {}, err: {}'.format(
-				                                                name,
-				                                                p,
-				                                                'error'
-				                                                ))
+				          name,
+				          p,
+				          'error'
+				          ))
 		else:
 			def wrapper(self):
 				"""
@@ -102,8 +102,8 @@ class RFC_Type(type):
 			for line in fp.readlines():
 				cls.process_command(attrs, line)
 
-
 		return super().__new__(cls, name, bases, attrs)
+
 
 class RFC1459_Case(unittest.TestCase, metaclass=RFC_Type):
 	"""
@@ -144,6 +144,7 @@ class RFC2812_Case(unittest.TestCase, metaclass=RFC_Type):
 		cls.bot = testBot()
 '''
 
+
 class Custom_Case(unittest.TestCase):
 
 	def test_register(self):
@@ -151,6 +152,7 @@ class Custom_Case(unittest.TestCase):
 		custom_command_dict = Command_Dict()
 
 		name = 'chanserv'
+
 		@custom_command_dict.register(name)  # TODO: change name
 		def chan_command(msg):
 			return custom_command_dict['PRIVMSG']('chanserv', msg)
